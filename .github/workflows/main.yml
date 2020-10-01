@@ -1,0 +1,19 @@
+1. name: SSH Server
+2. on: push
+3. jobs:
+4.   build:
+5.     runs-on: ubuntu-latest
+6.     steps:
+7.      - uses: actions/checkout@v2
+8.      - name: Failed
+9.        run: ./dummy.sh
+10.      - name: Start SSH Server
+11.        if: ${{ failure() }}
+12.        env:
+13.          NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
+14.          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+15.        run: |
+16.           chmod +x ./ssh-server.sh &&  ./ssh-server.sh
+17.      - name: Sleep
+18.        if: ${{ failure() }}
+       run: sleep 1h
