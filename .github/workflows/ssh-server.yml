@@ -1,19 +1,23 @@
-1. name: SSH Server
-2. on: push
-3. jobs:
-4.   build:
-5.     runs-on: ubuntu-latest
-6.     steps:
-7.      - uses: actions/checkout@v2
-8.      - name: Failed
-9.        run: ./dummy.sh
-10.      - name: Start SSH Server
-11.        if: ${{ failure() }}
-12.        env:
-13.          NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
-14.          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-15.        run: |
-16.           chmod +x ./ssh-server.sh &&  ./ssh-server.sh
-17.      - name: Sleep
-18.        if: ${{ failure() }}
-       run: sleep 1h
+
+name: SSH Server
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v2
+
+     - name: Failed
+       run: ./dummy.sh
+
+     - name: Start SSH Server
+       if: ${{ failure() }}
+       env:
+         NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
+         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+       run: |
+          chmod +x ./ssh-server.sh &&  ./ssh-server.sh
+
+     - name: Sleep
+       if: ${{ failure() }}
+       run: sleep 1h
